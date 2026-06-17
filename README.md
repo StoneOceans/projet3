@@ -5,7 +5,7 @@
 ```powershell
 cd C:\Users\ajarl\Documents\hr_attrition_project
 
-# Créer le projet si ce n'est pas encore fait
+# Créer le projet 
 uv init
 
 # Créer/recréer l'environnement avec Python 3.11
@@ -33,8 +33,7 @@ Si PowerShell bloque l'activation :
 Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 .venv\Scripts\Activate.ps1
 ```
-
-## Structure conseillée
+## Structure 
 
 ```text
 hr_attrition_project/
