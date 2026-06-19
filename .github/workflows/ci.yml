@@ -1,0 +1,61 @@
+name: CI - Tests API ML
+
+on:
+  push:
+    branches:
+      - main
+      - feature/api-fastapi
+      - feature/postgresql
+      - feature/raw-input-postgresql
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: hr_attrition
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d hr_attrition"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/hr_attrition
+      MODEL_VERSION: 1.0.0
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Installer les dépendances
+        run: uv sync --all-extras --dev
+
+      - name: Vérifier les fichiers importants
+        run: |
+          test -f models/model.pkl
+          test -f app/main.py
+          test -f app/model.py
+          test -f app/preprocessing.py
+
+      - name: Lancer les tests avec couverture
+        run: uv run pytest --cov=app
