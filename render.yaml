@@ -15,4 +15,3 @@ services:
 databases:
   - name: hr-attrition-db
     databaseName: hr_attrition
-    user: postgres
