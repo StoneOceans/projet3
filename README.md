@@ -1,48 +1,68 @@
-# HR Attrition Project - TechNova Partners
+# HR Attrition API - Projet 3
 
-## Installation sous Windows PowerShell
+## 1. Présentation du projet
 
-```powershell
-cd C:\Users\ajarl\Documents\hr_attrition_project
+Cette application permet :
 
-# Créer le projet 
-uv init
+- de recevoir des données brutes concernant un salarié ;
+- de valider automatiquement les données avec Pydantic ;
+- de transformer les données brutes en variables exploitables par le modèle ;
+- de générer une prédiction avec un modèle Random Forest entraîné ;
+- d’enregistrer les données et les résultats dans une base PostgreSQL ;
+- de consulter l’historique des prédictions ;
+- de tester automatiquement le projet avec Pytest ;
+- d’automatiser les tests avec GitHub Actions.
 
-# Créer/recréer l'environnement avec Python 3.11
-uv venv --python 3.11
+---
 
-# Activer l'environnement sous PowerShell
-.venv\Scripts\Activate.ps1
+## 2. Objectifs du projet
 
-# Vérifier le Python utilisé
-Get-Command python
-python --version
+Les objectifs principaux sont :
 
-# Installer les dépendances à partir du pyproject.toml
-uv sync
+- créer une API avec FastAPI ;
+- exposer un modèle de machine learning via un endpoint `/predict` ;
+- utiliser Pydantic pour valider les entrées ;
+- utiliser PostgreSQL pour stocker les prédictions ;
+- écrire des tests unitaires et fonctionnels avec Pytest ;
+- générer un rapport de couverture avec pytest-cov ;
+- mettre en place une intégration continue avec GitHub Actions ;
+- structurer correctement le dépôt GitHub ;
+- documenter l’installation, l’utilisation et le fonctionnement du projet.
 
-# Ajouter le kernel Jupyter
-python -m ipykernel install --user --name hr-attrition-env --display-name "HR Attrition Project"
+---
 
-# Lancer Jupyter
-python -m jupyter lab
-```
-
-Si PowerShell bloque l'activation :
-```powershell
-Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-.venv\Scripts\Activate.ps1
-```
-## Structure 
+## 3. Structure du projet
 
 ```text
-hr_attrition_project/
+projet3/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── schemas.py
+│   ├── model.py
+│   ├── preprocessing.py
+│   ├── database.py
+│   ├── db_models.py
+│   └── crud.py
 ├── data/
-│   ├── extrait_sirh.csv
-│   ├── extrait_eval.csv
-│   └── extrait_sondage.csv
+├── db/
+│   ├── create_db.sql
+│   └── schema_bdd.md
+├── models/
+│   └── model.pkl
 ├── notebooks/
-│   └── 01_eda_feature_engineering.ipynb
+│   └── 01_feature_engineering_modelisation_finetuning_SHAP.ipynb
+├── presentation/
+├── tests/
+│   ├── __init__.py
+│   ├── test_api.py
+│   ├── test_model.py
+│   └── test_preprocessing.py
+├── .env.example
+├── .gitignore
 ├── pyproject.toml
-└── README.md
-```
+├── README.md
+└── uv.lock
