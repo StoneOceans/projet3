@@ -1,4 +1,4 @@
-from app.model import predict_attrition
+from app.preprocessing import MODEL_COLUMNS, transform_raw_input
 from app.schemas import RawEmployeeInput
 
 
@@ -32,11 +32,34 @@ VALID_PAYLOAD = {
 }
 
 
-def test_model_prediction_output_format():
+def test_transform_raw_input_returns_dataframe_with_47_columns():
     data = RawEmployeeInput(**VALID_PAYLOAD)
 
-    prediction, probability = predict_attrition(data)
+    df = transform_raw_input(data)
 
-    assert prediction in [0, 1]
-    assert isinstance(probability, float)
-    assert 0 <= probability <= 1
+    assert df.shape[0] == 1
+    assert df.shape[1] == 47
+    assert list(df.columns) == MODEL_COLUMNS
+
+
+def test_transform_raw_input_creates_business_features():
+    data = RawEmployeeInput(**VALID_PAYLOAD)
+
+    df = transform_raw_input(data)
+
+    assert "satisfaction_moyenne" in df.columns
+    assert "ecart_note_evaluation" in df.columns
+    assert "ratio_anciennete_poste" in df.columns
+    assert "salaire_par_annee_experience" in df.columns
+
+
+def test_transform_raw_input_encodes_categorical_features():
+    data = RawEmployeeInput(**VALID_PAYLOAD)
+
+    df = transform_raw_input(data)
+
+    assert df["genre_M"].iloc[0] == 1
+    assert df["statut_marital_Marié(e)"].iloc[0] == 1
+    assert df["departement_Consulting"].iloc[0] == 1
+    assert df["poste_Consultant"].iloc[0] == 1
+    assert df["frequence_deplacement_Occasionnel"].iloc[0] == 1
