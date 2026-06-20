@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: hr-attrition-api
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: MODEL_VERSION
+        value: 1.0.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hr-attrition-db
+          property: connectionString
+
+databases:
+  - name: hr-attrition-db
+    databaseName: hr_attrition
