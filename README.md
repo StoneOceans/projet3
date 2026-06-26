@@ -416,9 +416,6 @@ uvicorn app.main:app --host 0.0.0.0 --port $PORT
 
 Une fois le déploiement finalisé, l’URL de production sera ajoutée ici :
 
-```text
-URL de production : à compléter après déploiement Cloudfanatic
-```
 
 Gestion Git
 
